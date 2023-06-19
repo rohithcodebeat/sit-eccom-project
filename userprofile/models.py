@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from products.models import ProductMainModel
+# from orders.models import OrderModel
 # Create your models here.
 
 class UserAddressModel(models.Model):
@@ -45,7 +46,7 @@ class UserProfileModel(models.Model):
     address = models.ManyToManyField(UserAddressModel, related_name="UserProfileModel_address", blank=True)
     wishlist = models.ManyToManyField(UserWishListModel, related_name="UserProfileModel_wishlist", blank=True)
     cart = models.ManyToManyField(UserCartModel, related_name="UserProfileModel_cart", blank=True)
-
+    # orders = models.ManyToManyField(OrderModel, related_name="UserProfileModel_orders", blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -26,6 +26,8 @@ class PaymentDetailModel(models.Model):
     actual_price = models.DecimalField(decimal_places=2, max_digits=10)
     discount_price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     final_price = models.DecimalField(decimal_places=2, max_digits=10)
+    shipping_fee = models.DecimalField(decimal_places=2, max_digits=10)
+
 
     discount_code = models.CharField(max_length=100, null=True, blank=True)
     payment_mode = models.CharField(max_length=100, null=True, blank=True, choices=PAYMENT)
@@ -35,10 +37,12 @@ class PaymentDetailModel(models.Model):
 
 
 class OrderModel(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='OrderModel_user')
     order_id = models.CharField(max_length=100, unique=True, primary_key=True)
     product = models.ForeignKey(ProductMainModel, on_delete=models.CASCADE, related_name='OrderModel_product')
     status = models.CharField(max_length=50, blank=True, choices=STATUS, default="INPROGRESS")
     address = models.ForeignKey(UserAddressModel, on_delete=models.CASCADE, related_name='OrderModel_address', null=True, blank=True)
+
     date_of_order = models.DateTimeField(null=True, blank=True)
     date_of_delivery = models.DateTimeField(null=True, blank=True)
 
@@ -47,4 +51,5 @@ class OrderModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+
 
