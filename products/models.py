@@ -2,19 +2,20 @@ from django.db import models
 
 # Create your models here.
 class ProductCategoryModel(models.Model):
-    title = models.CharField(max_length=200, null=True, blank=True)
+    title = models.CharField(max_length=200, null=True, blank=True, unique=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class ProductBrandModel(models.Model):
-    title = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(max_length=100, null=True, blank=True, unique=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
 class ProductColorModel(models.Model):
-    title = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(max_length=100, null=True, blank=True, unique=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -30,6 +31,7 @@ class ProductImageModel(models.Model):
     image = models.FileField(upload_to="product-image/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
 
 class ProductServiceModel(models.Model):
     title = models.CharField(max_length=200, null=True, blank=True)
@@ -51,15 +53,14 @@ class ProductVariationModel(models.Model):
 class ProductModel(models.Model):
     title = models.CharField(max_length=200, null=True, blank=True)
     brand = models.ForeignKey(ProductBrandModel, on_delete=models.CASCADE, related_name="ProductModel_brand", null=True, blank=True)
-    color = models.ManyToManyField(ProductColorModel, related_name="ProductModel_color", blank=True)
     images = models.ManyToManyField(ProductImageModel, related_name="ProductModel_images",blank=True)
     description = models.ManyToManyField(ProductDescriptionModel, related_name="ProductModel_description", blank=True)
+    category = models.ForeignKey(ProductCategoryModel, related_name="ProductModel_category", on_delete=models.CASCADE, null=True, blank=True)
     services = models.ManyToManyField(ProductServiceModel, related_name="ProductModel_services", blank=True)
     variation = models.ManyToManyField(ProductVariationModel, related_name="ProductModel_variation", blank=True)
-    category = models.ForeignKey(ProductCategoryModel, related_name="ProductModel_category", on_delete=models.CASCADE, null=True, blank=True)
+    color = models.ManyToManyField(ProductColorModel, related_name="ProductModel_color", blank=True)
 
     
-
     
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -85,3 +86,10 @@ class ProductMainModel(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+"""
+https://www.amazon.in/Amazon-Brand-Solimo-Filled-Beans/dp/B08GS5CLSS/?_encoding=UTF8&pd_rd_w=kjsG7&content-id=amzn1.sym.22a42d01-0089-4fec-a28b-ec7a361d085f&pf_rd_p=22a42d01-0089-4fec-a28b-ec7a361d085f&pf_rd_r=CTY293CFE9678A2WYVFF&pd_rd_wg=7iIsN&pd_rd_r=fd258e28-f4e5-4ccc-b2d8-05728c2f7d9e&ref_=pd_gw_ci_mcx_mr_hp_d&th=1
+https://www.amazon.in/Amazon-Brand-Solimo-Filled-Beans/dp/B08GRSBWQH/?_encoding=UTF8&pd_rd_w=kjsG7&content-id=amzn1.sym.22a42d01-0089-4fec-a28b-ec7a361d085f&pf_rd_p=22a42d01-0089-4fec-a28b-ec7a361d085f&pf_rd_r=CTY293CFE9678A2WYVFF&pd_rd_wg=7iIsN&pd_rd_r=fd258e28-f4e5-4ccc-b2d8-05728c2f7d9e&ref_=pd_gw_ci_mcx_mr_hp_d&th=1
+https://amzn.eu/d/9ivLckR
+https://amzn.eu/d/b5KJAp9
+"""
