@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     # Custom Apps
     'users',
     'products',
+    'orders',
+    'userprofile',
     # Third Party Apps
     'rest_framework',
     'rest_framework_simplejwt'
