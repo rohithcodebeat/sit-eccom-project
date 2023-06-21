@@ -73,7 +73,7 @@ class ProductModelListSerializer(serializers.ModelSerializer):
             data = ProductServiceModelSerializer(obj.services.all(), many=True).data 
         except Exception as e:
 
-            data = []
+            data = [str(e)]
         return data 
     
     def get_description(self, obj):
