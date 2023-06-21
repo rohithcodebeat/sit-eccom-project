@@ -7,11 +7,17 @@ class ProductCategoryModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.title
+
 class ProductBrandModel(models.Model):
     title = models.CharField(max_length=100, null=True, blank=True, unique=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
 
 
 class ProductColorModel(models.Model):
@@ -19,6 +25,9 @@ class ProductColorModel(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
 
 
 class ProductDescriptionModel(models.Model):
@@ -40,13 +49,17 @@ class ProductServiceModel(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.title
 
 class ProductVariationModel(models.Model):
     title = models.CharField(max_length=100)
-
+    category = models.ForeignKey(ProductCategoryModel, on_delete=models.CASCADE, related_name="ProductVariationModel_category", null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.title
 
 
 
