@@ -149,3 +149,18 @@ class ProductModelCreateSerializer(serializers.ModelSerializer):
         return validated_data
     
 
+class DashboardProductMainModelCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductMainModel 
+        fields = "__all__"
+
+
+# class DashboardProductMainListCreateSerializer(serializers.ModelSerializer):
+#     # product = serializers.Ser
+#     class Meta:
+#         model = ProductMainModel 
+#         fields = "__all__"
+
+    
+#     # def get_
+
