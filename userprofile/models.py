@@ -44,8 +44,8 @@ class UserProfileModel(models.Model):
     gender = models.CharField(max_length=100, null=True, blank=True, choices=GENDER)
 
     address = models.ManyToManyField(UserAddressModel, related_name="UserProfileModel_address", blank=True)
-    wishlist = models.ManyToManyField(UserWishListModel, related_name="UserProfileModel_wishlist", blank=True)
-    cart = models.ManyToManyField(UserCartModel, related_name="UserProfileModel_cart", blank=True)
+    wishlist = models.OneToOneField(UserWishListModel, on_delete=models.CASCADE,related_name="UserProfileModel_wishlist", blank=True, null=True)
+    cart = models.OneToOneField(UserCartModel, on_delete=models.CASCADE,related_name="UserProfileModel_cart", blank=True, null=True)
     
 
     created_at = models.DateTimeField(auto_now_add=True)
