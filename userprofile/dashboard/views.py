@@ -14,4 +14,5 @@ class DasboardUserCartListAPIView(generics.ListAPIView):
 class DashboardUserWishListAPIView(generics.ListAPIView):
     queryset = UserWishListModel.objects.all()
     serializer_class = DashboardUserWishListSerializer
+    
 

@@ -52,6 +52,27 @@ class WebsiteUserAddressModelListSerializer(serializers.ModelSerializer):
         model = UserAddressModel 
         fields = "__all__"
 
+
+class WebsiteUserAddressModelCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddressModel 
+        fields = "__all__"
+    
+
+    def create(self, validated_data): 
+        address_instance =  UserAddressModel.objects.create(**validated_data)
+        instance  = UserProfileModel.objects.get(user=self.context["request"].user) 
+        instance.address.add(address_instance)
+        instance.save()
+        return validated_data 
+
+
+class WebsiteUserAddressModelUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddressModel 
+        fields = "__all__"
+
+
 class WebsiteUserProfileModelUpdateSerializer(serializers.ModelSerializer):
     address = serializers.SerializerMethodField()
     class Meta:

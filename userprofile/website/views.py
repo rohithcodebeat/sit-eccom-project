@@ -1,6 +1,6 @@
-from ..models import UserWishListModel, UserProfileModel, UserCartModel
+from ..models import UserWishListModel, UserProfileModel, UserCartModel, UserAddressModel
 from products.models import  ProductMainModel, ProductModel
-from .serializers import WebsiteUserWishListUpdateSerializer, WebsiteUserWishListSerializer, WebsiteUserCartListUpdateSerializer, WebsiteUserCartListSerializer, WebsiteUserProfileModelUpdateSerializer
+from .serializers import WebsiteUserWishListUpdateSerializer, WebsiteUserWishListSerializer, WebsiteUserCartListUpdateSerializer, WebsiteUserCartListSerializer, WebsiteUserProfileModelUpdateSerializer, WebsiteUserAddressModelCreateSerializer, WebsiteUserAddressModelUpdateSerializer, WebsiteUserAddressModelListSerializer
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response 
 
@@ -38,6 +38,7 @@ class WebsiteUserWishListRemoveAPIView(generics.GenericAPIView):
 class WebsiteUserWishListAPIView(generics.ListAPIView):
     queryset = UserWishListModel.objects.all()
     serializer_class = WebsiteUserWishListSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return UserProfileModel.objects.get(user=self.request.user).wishlist 
@@ -80,6 +81,7 @@ class WebsiteUserCartListRemoveAPIView(generics.GenericAPIView):
 class WebsiteUserCartListAPIView(generics.ListAPIView):
     queryset = UserCartModel.objects.all()
     serializer_class = WebsiteUserCartListSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return UserProfileModel.objects.get(user=self.request.user).cart 
@@ -92,6 +94,7 @@ class WebsiteUserCartListAPIView(generics.ListAPIView):
 class WebsiteUserProfileModelUpdateAPIView(generics.GenericAPIView):
     queryset = UserProfileModel.objects.all()
     serializer_class = WebsiteUserProfileModelUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         queryset = self.queryset.get(user=request.user)
@@ -108,3 +111,48 @@ class WebsiteUserProfileModelUpdateAPIView(generics.GenericAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
+
+class WebsiteUserAddressModelCreateAPIView(generics.ListCreateAPIView):
+    queryset = UserAddressModel.objects.all()
+    serializer_class = WebsiteUserAddressModelListSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return UserProfileModel.objects.get(user=self.request.user).address.all()
+
+    def create(self, request):
+        serializer = self.WebsiteUserAddressModelCreateSerializer(data=request.data, context={"request" : request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebsiteUserAddressModelUpdateGenericAPIView(generics.GenericAPIView):
+    queryset = UserAddressModel.objects.all()
+    serializer_class = WebsiteUserAddressModelUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return UserProfileModel.objects.get(user=self.request.user).address.all()
+
+    def get(self, request, id):
+        try:
+            queryset = self.get_queryset().get(pk=id)
+            serializer = self.serializer_class(queryset, many=False) 
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"message" : f"something went wrong, {e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, id):
+        try:
+            queryset = self.get_queryset().get(pk=id)
+            serializer = self.serializer_class(instance=queryset, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"message" : f"something went wrong, {e}"}, status=status.HTTP_400_BAD_REQUEST)
