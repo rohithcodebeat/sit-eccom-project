@@ -58,6 +58,8 @@ class WebsiteUserCartListUpdateAPIView(generics.GenericAPIView):
         userprofile_query = UserProfileModel.objects.get(user=request.user)
         query = userprofile_query.cart 
         product = ProductMainModel.objects.get(product_code=request.data["product_code"])
+        if product.is_ordered:
+            return Response({"message" : "Product is sold"}, status=status.HTTP_400_BAD_REQUEST)
         query.products.add(product)
         query.save()
         return Response({"message" : "Added to Cart"}, status=status.HTTP_200_OK)
