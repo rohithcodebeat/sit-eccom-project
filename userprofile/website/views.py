@@ -121,7 +121,7 @@ class WebsiteUserAddressModelCreateAPIView(generics.ListCreateAPIView):
         return UserProfileModel.objects.get(user=self.request.user).address.all()
 
     def create(self, request):
-        serializer = self.WebsiteUserAddressModelCreateSerializer(data=request.data, context={"request" : request})
+        serializer = WebsiteUserAddressModelCreateSerializer(data=request.data, context={"request" : request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

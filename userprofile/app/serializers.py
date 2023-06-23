@@ -64,3 +64,28 @@ class AppUserProfileModelUpdateSerializer(serializers.ModelSerializer):
         except:
             data = []
         return data 
+
+class AppUserAddressModelListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddressModel 
+        fields = "__all__"
+
+
+class AppUserAddressModelCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddressModel 
+        fields = "__all__"
+    
+
+    def create(self, validated_data): 
+        address_instance =  UserAddressModel.objects.create(**validated_data)
+        instance  = UserProfileModel.objects.get(user=self.context["request"].user) 
+        instance.address.add(address_instance)
+        instance.save()
+        return validated_data 
+
+
+class AppUserAddressModelUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddressModel 
+        fields = "__all__"

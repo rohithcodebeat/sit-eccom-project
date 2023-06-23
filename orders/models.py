@@ -23,10 +23,10 @@ PAYMENT = [
 
 class PaymentDetailModel(models.Model):
     transcation_id = models.CharField(max_length=100, unique=True, primary_key=True)
-    actual_price = models.DecimalField(decimal_places=2, max_digits=10)
+    actual_price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     discount_price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    final_price = models.DecimalField(decimal_places=2, max_digits=10)
-    shipping_fee = models.DecimalField(decimal_places=2, max_digits=10)
+    final_price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    shipping_fee = models.DecimalField(decimal_places=2, max_digits=10, default=0)
 
 
     discount_code = models.CharField(max_length=100, null=True, blank=True)
@@ -42,6 +42,7 @@ class OrderModel(models.Model):
     product = models.ForeignKey(ProductMainModel, on_delete=models.CASCADE, related_name='OrderModel_product')
     status = models.CharField(max_length=50, blank=True, choices=STATUS, default="INPROGRESS")
     address = models.ForeignKey(UserAddressModel, on_delete=models.CASCADE, related_name='OrderModel_address', null=True, blank=True)
+    payment_details = models.ForeignKey(PaymentDetailModel, on_delete=models.CASCADE, related_name="OrderModel_payment_details", null=True, blank=True)
 
     date_of_order = models.DateTimeField(null=True, blank=True)
     date_of_delivery = models.DateTimeField(null=True, blank=True)
