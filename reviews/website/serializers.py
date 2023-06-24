@@ -12,7 +12,8 @@ class WebsiteProductReviewModelCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         product = data["product"]
-        if not OrderModel.objects.filter(user=self.context["request"].user, product__product=product).exists():
+        product_main_models_instance = ProductMainModel.objects.get(product=product)
+        if not OrderModel.objects.filter(user=self.context["request"].user, product=product_main_models_instance).exists():
             raise serializers.ValidationError({"message" : "You can only review the project after ordering"})
 
 
